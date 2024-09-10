@@ -1,50 +1,67 @@
-'use client';
+"use client"; // Indicates that this component should be rendered on the client side
+
 import { useEffect, useState } from 'react';
 
 export default function Comp() {
+  // State to store the list of deposits fetched from the API
   const [deposits, setDeposits] = useState([]);
+  // State to track the loading status of the data
   const [loading, setLoading] = useState(true);
+  // State to manage the current page number for pagination
   const [currentPage, setCurrentPage] = useState(1);
+  // Number of deposits to display per page
   const [depositsPerPage] = useState(10);
 
   useEffect(() => {
     let intervalId;
 
+    // Function to fetch deposits from the API
     async function fetchDeposits() {
       try {
+        // Fetch data from the API endpoint
         const response = await fetch('/api/trackDeposits');
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('Network response was not ok'); // Handle network errors
         }
+        // Parse the JSON data from the response
         const data = await response.json();
+        // Update state with the fetched data
         setDeposits(data);
       } catch (error) {
+        // Log any errors that occur during the fetch
         console.error('Error fetching deposits:', error);
       } finally {
+        // Update loading state to false once data is fetched or an error occurs
         setLoading(false);
       }
     }
 
-    fetchDeposits(); // Initial fetch
+    // Initial fetch of deposits
+    fetchDeposits();
 
+    // Set up an interval to refresh the deposits data every 10 seconds
     intervalId = setInterval(() => {
-      fetchDeposits(); // Refresh data every 10 seconds
+      fetchDeposits(); // Refresh data
     }, 10000); // 10000 ms = 10 seconds
 
     // Cleanup function to clear the interval when the component unmounts
     return () => clearInterval(intervalId);
   }, []);
 
-  // Calculate the index of the first and last deposits for the current page
+  // Calculate the index of the first and last deposit for the current page
   const indexOfLastDeposit = currentPage * depositsPerPage;
   const indexOfFirstDeposit = indexOfLastDeposit - depositsPerPage;
+  // Slice the deposits array to get only the deposits for the current page
   const currentDeposits = deposits.slice(indexOfFirstDeposit, indexOfLastDeposit);
 
-  // Handle pagination
+  // Calculate the total number of pages for pagination
   const totalPages = Math.ceil(deposits.length / depositsPerPage);
+
+  // Function to handle page change
   const handlePageChange = (pageNumber) => {
+    // Ensure the page number is within valid bounds
     if (pageNumber >= 1 && pageNumber <= totalPages) {
-      setCurrentPage(pageNumber);
+      setCurrentPage(pageNumber); // Update the current page
     }
   };
 
@@ -54,6 +71,7 @@ export default function Comp() {
         Ethereum Transactions Tracker
       </h1>
       {loading ? (
+        // Display a loading message while data is being fetched
         <p className="text-white">Loading transactions...</p>
       ) : (
         <div className="bg-card rounded-lg shadow-md overflow-hidden dark:bg-background">
@@ -69,12 +87,14 @@ export default function Comp() {
             </thead>
             <tbody>
               {currentDeposits.length === 0 ? (
+                // Display a message if no deposits are available
                 <tr>
                   <td colSpan="5" className="py-3 px-4 text-center text-black">
                     No transactions found.
                   </td>
                 </tr>
               ) : (
+                // Map over the deposits and display them in table rows
                 currentDeposits.map((deposit, index) => (
                   <tr
                     key={index}
