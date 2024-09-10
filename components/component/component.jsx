@@ -20,12 +20,12 @@ export function Component() {
   // Asynchronous function to fetch transactions from Etherscan API
   const fetchTransactions = async () => {
     const BASE_URL = 'https://api.etherscan.io/api'; // Base URL for Etherscan API
-    const API_KEY = process.env.ETHERSCAN_API_KEY; // API key for Etherscan (from environment variables)
+    const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY; // API key for Etherscan (from environment variables)
     const contractAddress = process.env.Contract_Address; // Contract address (from environment variables)
 
     // Construct URLs for fetching transaction and internal transaction lists
-    const txListUrl = `${BASE_URL}?module=account&action=txlist&address=${contractAddress}&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=${API_KEY}`;
-    const internalTxListUrl = `${BASE_URL}?module=account&action=txlistinternal&address=${contractAddress}&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=${API_KEY}`;
+    const txListUrl = `${BASE_URL}?module=account&action=txlist&address=0x00000000219ab540356cBB839Cbe05303d7705Fa&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=${ETHERSCAN_API_KEY}`;
+    const internalTxListUrl = `${BASE_URL}?module=account&action=txlistinternal&address=0x00000000219ab540356cBB839Cbe05303d7705Fa&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=${ETHERSCAN_API_KEY}`;
 
     try {
       // Fetch both transaction and internal transaction lists concurrently
