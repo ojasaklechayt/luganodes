@@ -1,0 +1,18 @@
+version: '3.8'
+services:  
+  app:    
+    image: node:18-alpine    
+    container_name: ethereum-tracker    
+    working_dir: /app    
+    volumes:      
+      - .:/app    
+    ports:      
+      - "3000:3000"    
+    command: ["sh", "-c", "npm install && npm run dev"]    
+    environment:      
+      - NODE_ENV=development
+      - RPC_LINK=${RPC_LINK}
+      - Contract_Address=${Contract_Address}
+      - ETHERSCAN_API_KEY=${ETHERSCAN_API_KEY}
+      - Contract_ABI=${Contract_ABI} 
+    restart: always
