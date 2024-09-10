@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Ethereum Transaction Tracker
 
-## Getting Started
+## Overview
 
-First, run the development server:
+The Ethereum Transaction Tracker is a web application designed to monitor and display Ethereum transactions. It fetches transaction data from the Ethereum blockchain and the Etherscan API, providing users with up-to-date information on deposits and other transactions.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Architecture
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Components
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+1. **Home Page**: Provides a welcome message and two navigation buttons:
+   - **Custom Tracker**: A page for viewing transaction details fetched directly from the Ethereum blockchain.
+   - **API Tracker**: A page for viewing transactions fetched via the Etherscan API.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+2. **API Route**: Fetches Ethereum deposit logs from the blockchain using ethers.js and processes them to provide transaction details.
 
-## Learn More
+3. **Custom Tracker Component**: Displays the latest transactions with details like block number, timestamp, amount, gas fee, and transaction hash.
 
-To learn more about Next.js, take a look at the following resources:
+4. **API Tracker Component**: Retrieves and displays transaction data from the Etherscan API, including internal transactions and standard transactions.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Setup
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Prerequisites
 
-## Deploy on Vercel
+- Node.js (>= 14.x)
+- npm or yarn
+- An Ethereum node provider URL (e.g., Infura, Alchemy)
+- An Etherscan API key
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Installation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/your-username/ethereum-transaction-tracker.git
+   cd ethereum-transaction-tracker
+   ```
+
+2. **Install Dependencies**
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. **Set Up Environment Variables**
+
+   Create a `.env.local` file in the root of your project and add the following variables:
+
+   ```env
+   NEXT_PUBLIC_CONTRACT_ADDRESS=0xYourContractAddressHere
+   ETHERSCAN_API_KEY=YourEtherscanAPIKeyHere
+   Contract_ABI=ContractABIHere
+   ```
+
+4. **Run the Development Server**
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+   Navigate to `http://localhost:3000` to view the application.
+
+## Project Structure
+
+- **pages/index.tsx**: Contains the Home component with navigation buttons.
+- **pages/CustomTracker.tsx**: Contains the Custom Tracker component that displays blockchain transactions.
+- **pages/EtherScanAPI.tsx**: Contains the API Tracker component that displays transactions fetched from Etherscan.
+- **utils/ethers.ts**: Contains the configuration for the ethers.js provider.
+- **routes/api/transactions/route.ts**: Handles the API route to fetch transaction logs from the Ethereum blockchain.
+
+## How It Works
+
+1. **Home Page**: The user is greeted with a welcome message and options to navigate to the Custom Tracker or API Tracker.
+
+2. **Custom Tracker**:
+   - Fetches and displays the latest deposit logs from the Ethereum blockchain.
+   - Logs are fetched with retry logic to handle rate limits and errors.
+
+3. **API Tracker**:
+   - Retrieves and displays transaction data from the Etherscan API.
+   - Displays the latest transactions sorted by timestamp with pagination every 10 seconds.
+
+## Features
+
+- **Automatic Refresh**: The transaction data refreshes every 10 seconds to display new transactions.
+- **Pagination**: Displays the first 10 transactions and supports additional transactions as needed.
+- **Responsive Design**: Built with Tailwind CSS for a modern and responsive interface.
+
+## Contribution
+
+Feel free to fork the repository and submit pull requests. For any issues or feature requests, please open an issue on GitHub.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
