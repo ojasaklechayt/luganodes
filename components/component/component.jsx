@@ -9,7 +9,7 @@ const formatEther = (value) => ethers.formatEther(value);
 export function Component() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const provider = new ethers.JsonRpcProvider(process.env.RPC_LINK);
+  const formatGwei = (value) => value ? parseFloat(ethers.formatUnits(value, "gwei")).toFixed(2) : "0.00";
 
   const fetchTransactions = async () => {
     const BASE_URL = 'https://api.etherscan.io/api';
@@ -34,6 +34,8 @@ export function Component() {
           ...internalTxListData.result,
         ];
 
+        console.log(transactions);
+
         // Sort by timeStamp in descending order and slice the latest 10 transactions
         const latestTransactions = transactions
           .sort((a, b) => b.timeStamp - a.timeStamp)
@@ -53,11 +55,10 @@ export function Component() {
 
   useEffect(() => {
     fetchTransactions();
-
     // Fetch transactions every 30 seconds
     const interval = setInterval(() => {
       fetchTransactions();
-    }, 30000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);
@@ -110,7 +111,7 @@ export function Component() {
                     <td className="py-3 px-4 text-right text-black">
                       {formatEther(transaction.value)} ETH
                     </td>
-                    <td className="py-3 px-4 text-right text-black">N/A</td>
+                    <td className="py-3 px-4 text-right text-black">{formatGwei(transaction.gasPrice)} Gwei</td>
                     <td className="py-3 px-4 text-black">
                       <Link
                         href={`https://etherscan.io/tx/${transaction.hash}`}
