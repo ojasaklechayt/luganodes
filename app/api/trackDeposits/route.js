@@ -1,6 +1,6 @@
 // Import the provider from a custom utility module and ethers.js functions for formatting and decoding
 import { provider } from '../../../utils/ethers';
-import { formatEther, getAbiCoder } from 'ethers'; // Direct imports from ethers.js v6
+import { formatEther, AbiCoder } from 'ethers'; // Direct imports from ethers.js v6
 
 // Define a constant for the maximum number of logs to fetch
 const MAX_LOGS = 100; // Number of logs to fetch
@@ -51,6 +51,8 @@ export async function GET() {
         // Limit the results to the top MAX_LOGS logs
         const logs = allLogs.slice(0, MAX_LOGS);
 
+        const abiCoder = new AbiCoder();
+
         // Fetch detailed information for each log
         const deposits = await Promise.all(logs.map(async (log) => {
             // Fetch block information for the log to get the timestamp
@@ -66,7 +68,7 @@ export async function GET() {
             // Decode the log data to extract the deposit amount
             let depositAmount;
             try {
-                const decodedData = getAbiCoder().decode(["uint256"], log.data);
+                const decodedData = abiCoder.decode(["uint256"], log.data);
                 depositAmount = formatEther(decodedData[0]);
             } catch (error) {
                 console.warn('Failed to decode log data:', error);
