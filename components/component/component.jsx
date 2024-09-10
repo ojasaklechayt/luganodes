@@ -24,8 +24,8 @@ export function Component() {
     const contractAddress = process.env.Contract_Address; // Contract address (from environment variables)
 
     // Construct URLs for fetching transaction and internal transaction lists
-    const txListUrl = `${BASE_URL}?module=account&action=txlist&address=${contractAddress}&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=${ETHERSCAN_API_KEY}`;
-    const internalTxListUrl = `${BASE_URL}?module=account&action=txlistinternal&address=${contractAddress}&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=${ETHERSCAN_API_KEY}`;
+    const txListUrl = `${BASE_URL}?module=account&action=txlist&address=0x00000000219ab540356cBB839Cbe05303d7705Fa&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=${ETHERSCAN_API_KEY}`;
+    const internalTxListUrl = `${BASE_URL}?module=account&action=txlistinternal&address=0x00000000219ab540356cBB839Cbe05303d7705Fa&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=${ETHERSCAN_API_KEY}`;
 
     try {
       // Fetch both transaction and internal transaction lists concurrently
